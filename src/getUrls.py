@@ -65,13 +65,22 @@ def similar(a, b): # calculate similarity
 
 def get_n_slr(url, n): # get n urls similar to the given url
     slr_urls = []
-    local_urls = []
+    local_urls = get_local_urls(url)
+    print local_urls
     slr_urls.append(url)
-    local_urls.append(url)
+    count1 = 0
+    count2 = 0
     while len(set(slr_urls)) < n:
-        local_urls = local_urls + get_local_urls(random.choice(local_urls))
+
+        #local_urls = local_urls + get_local_urls(random.choice(local_urls))
         #local_urls = local_urls + get_local_urls(local_urls[0])
-        slr_urls = slr_urls + get_slr_url(random.choice(local_urls), url)
+        slr_urls = slr_urls + get_slr_url(local_urls[count1], url)
+        count1 = count1 + 1
+        print len(set(slr_urls))
+        print set(slr_urls)
+        if count1 > len(local_urls):
+            local_urls = local_urls + get_local_urls(local_urls[count2])
+            count2 = count2 +1
     # print(len(set(slr_urls)))
     # print(set(slr_urls))
     return slr_urls
@@ -79,8 +88,7 @@ def get_n_slr(url, n): # get n urls similar to the given url
 
 
 # u = "http://8.7k7k.com/thread-1453189-1-1.html"
-# u1 = "https://bbs.hupu.com/18983709.html"
-# u2 = "https://bbs.hupu.com/18223709.html"
+u = "https://bbs.hupu.com/18983709.html"
 # u3 = "http://bbs.coolpad.com/thread-5147419-1-1.html"
 # u4 = 'http://bbs.dospy.com/thread-17787932-1-144-1.html'
 # u5 = 'https://bbs.hupu.com/18994823.html'
@@ -94,3 +102,4 @@ def get_n_slr(url, n): # get n urls similar to the given url
 # url_list =  set(get_n_slr(u5, 5))
 # print url_list
 # print len(url_list)
+get_n_slr(u,10)
