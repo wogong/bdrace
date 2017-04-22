@@ -362,8 +362,9 @@ if __name__ == '__main__':
         pat = re.compile('\[\d+\]')
         path_modified = pat.sub('', element.path_orig)
         key = path_modified + '_' + ''.join(element.attrib.keys())
+        path_depth = len(element.path_orig.split('/'))
         # element.score = path_frequency_dict[key] * text_avg_length_dict[key] / text_frequency_dict[element.text]
-        element.score = text_length_dict[key] / text_frequency_dict[element.text]
+        element.score = text_length_dict[key] * path_depth / text_frequency_dict[element.text]
         if element.score > score_max:
             score_max = element.score
             path_max = key
