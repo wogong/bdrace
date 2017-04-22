@@ -13,12 +13,12 @@ import re
 from lxml import html
 import getUrls
 from lxml.html.clean import clean_html
+import requests
+
 # from lxml import etree
 
 # The stop tags that we drop directly
 STOPTAG = ["script", "style"]
-
-
 class Element:
     """
     Element class
@@ -40,8 +40,22 @@ def build_etree(url):
     :param url: html link
     :return: tree
     """
+    header = {
+        'Referer': 'http://www.baidu.com',
+        'Cache-Control': 'max-age=0',
+        'Upgrade-Insecure-Requests': '1',
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Encoding': 'gzip, deflate, sdch',
+        'Accept-Language': 'zh-CN,zh;q=0.8,en;q=0.6,ja;q=0.4',
+    }
 
-    page = html.fromstring(urllib.urlopen(url).read())
+    response = requests.get(url, headers=header)
+    rawcontent = response.content
+    clear = re.compile('(<br.*/*>|<em>|</*font.*?>|</*b>|</*a.*?>|</*p.*?>)')
+    clean_content = re.sub(clear, '',rawcontent)
+    print clean_content
+    page = html.fromstring(clean_content)
     tree = html.etree.ElementTree(page)
     return tree
 
@@ -329,8 +343,10 @@ if __name__ == '__main__':
     # slr_urls = set(getUrls.get_n_slr(url, 50))
     # print slr_urls
     tree = build_etree(url)
+
     title_text = get_title_text(tree)
     print title_text
+
     element_list = parser_etree(tree)
     text_frequency_dict = cal_text_frequency(element_list)
     path_frequency_dict = cal_path_frequency(element_list)
@@ -339,7 +355,7 @@ if __name__ == '__main__':
     #     print "%s: %s"%(key, path_frequency_dict[key])
     text_length_dict = cal_text_length(element_list)
 
-    slr_urls = list(set(getUrls.get_n_slr(url, 10)))[:10]
+    slr_urls = list(set(getUrls.get_n_slr(url, 1)))[:1]
     # print len(slr_urls)
     for slr_url in slr_urls:
         tree_ex = build_etree(slr_url)
