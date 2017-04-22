@@ -114,7 +114,7 @@ def parser_etree(tree):
                 attrib = element.attrib
                 element_with_text = Element(path_orig, attrib, whole_text)
                 element_list.append(element_with_text)
-                # print element_with_text.path_orig + ":" + element_with_text.text
+                print element_with_text.path_orig + ":" + element_with_text.text
     return element_list
 
 
