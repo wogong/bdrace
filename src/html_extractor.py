@@ -114,7 +114,7 @@ if __name__ == '__main__':
                     reply = {"content": bbs_contents[i], "title": title_text, "publish_date": formatted_time_list[i]}
                     replys.append(reply)
                 bbs_info = {"post": post, "replys": replys}
-            bbs_json = json.dumps(bbs_info)
-            file_output.write(url_orig+'\t'+bbs_json)
+            bbs_json = json.dumps(bbs_info, ensure_ascii=False).encode('utf-8')
+            file_output.write(url_orig + '\t' + bbs_json)
     file_output.close()
     file_input.close()
