@@ -52,7 +52,7 @@ def build_etree(url):
 
     response = requests.get(url, headers=header)
     rawcontent = response.content
-    clear = re.compile('(<br.*/*>|<em>|</*font.*?>|</*b>|</*a.*?>|</*p.*?>)')
+    clear = re.compile('(<br.*/*>|<em>|</*font.*?>|</*b>|</*p.*?>)')
     clean_content = re.sub(clear, '',rawcontent)
     # print clean_content
     page = html.fromstring(clean_content)
