@@ -28,6 +28,10 @@ class Element:
         self.attrib = attrib
         self.text = text
         self.score = score
+    def __cmp__(self,other):
+        return cmp(self.score, other.score)
+    def __str__(self):
+        return str(self.score)+" "+ str(self.text) + " " + str(self.path_orig)
 
 
 def build_etree(url):
