@@ -7,6 +7,7 @@ import re
 
 import getUrls
 import html_parser
+import time_detector
 
 # the number of extension urls
 URLS_EX_NUM = 10
@@ -59,6 +60,13 @@ if __name__ == '__main__':
                 path_frequency_dict = html_parser.update_path_frequency(path_frequency_dict, path_frequency_dict_ex)
                 text_length_dict = html_parser.update_text_length(text_length_dict, text_length_dict_ex)
 
+            formatted_time_list = []
+            for element in elements_orig:
+                formatted_time = time_detector.time_formatter(element.text)
+                if formatted_time:
+                    formatted_time_list.append(formatted_time)
+            print formatted_time_list
+
             # calculate the avg text length
             text_avg_length_dict = {}
             for key in path_frequency_dict.keys():
@@ -84,8 +92,12 @@ if __name__ == '__main__':
                 if key == frequent_path:
                     bbs_contents.append(element.text)
 
-            print bbs_contents
-            print urls_extension
+            for content in bbs_contents:
+                print content
+            # print urls_extension
+
+
+
             file_output.write(url_orig)
     file_output.close()
     file_input.close()

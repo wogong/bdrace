@@ -54,7 +54,7 @@ def build_etree(url):
     rawcontent = response.content
     clear = re.compile('(<br.*/*>|<em>|</*font.*?>|</*b>|</*a.*?>|</*p.*?>)')
     clean_content = re.sub(clear, '',rawcontent)
-    print clean_content
+    # print clean_content
     page = html.fromstring(clean_content)
     tree = html.etree.ElementTree(page)
     return tree
@@ -114,6 +114,7 @@ def parser_etree(tree):
                 attrib = element.attrib
                 element_with_text = Element(path_orig, attrib, whole_text)
                 element_list.append(element_with_text)
+                # print element_with_text.path_orig + ":" + element_with_text.text
     return element_list
 
 

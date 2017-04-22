@@ -66,7 +66,7 @@ def similar(a, b): # calculate similarity
 def get_n_slr(url, n): # get n urls similar to the given url
     slr_urls = []
     local_urls = get_local_urls(url)
-    print local_urls
+    # print local_urls
     slr_urls.append(url)
     count1 = 0
     count2 = 0
@@ -76,8 +76,8 @@ def get_n_slr(url, n): # get n urls similar to the given url
         #local_urls = local_urls + get_local_urls(local_urls[0])
         slr_urls = slr_urls + get_slr_url(local_urls[count1], url)
         count1 = count1 + 1
-        print len(set(slr_urls))
-        print set(slr_urls)
+        # print len(set(slr_urls))
+        # print set(slr_urls)
         if count1 > len(local_urls):
             local_urls = local_urls + get_local_urls(local_urls[count2])
             count2 = count2 +1
