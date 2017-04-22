@@ -4,6 +4,7 @@
 import sys
 import logging
 import re
+import json
 
 import getUrls
 import html_parser
@@ -60,6 +61,7 @@ if __name__ == '__main__':
                 path_frequency_dict = html_parser.update_path_frequency(path_frequency_dict, path_frequency_dict_ex)
                 text_length_dict = html_parser.update_text_length(text_length_dict, text_length_dict_ex)
 
+            # find the time
             formatted_time_list = []
             for element in elements_orig:
                 formatted_time = time_detector.time_formatter(element.text)
@@ -96,8 +98,23 @@ if __name__ == '__main__':
                 print content
             # print urls_extension
 
+            # output bbs info
+            bbs_info = {}
+            if len(formatted_time_list) > 0:
+                if len(formatted_time_list) > len(bbs_contents):
+                    for i in xrange(len(formatted_time_list) - len(bbs_contents)):
+                        bbs_contents.append("")
+                else:
+                    bbs_contents = bbs_contents[:len(formatted_time_list)]
 
+                post = {"content": bbs_contents[0], "title": title_text, "publish_date": formatted_time_list[0]}
 
-            file_output.write(url_orig)
+                replys = []
+                for i in xrange(1,len(formatted_time_list)):
+                    reply = {"content": bbs_contents[i], "title": title_text, "publish_date": formatted_time_list[i]}
+                    replys.append(reply)
+                bbs_info = {"post": post, "replys": replys}
+            bbs_json = json.dumps(bbs_info)
+            file_output.write(url_orig+'\t'+bbs_json)
     file_output.close()
     file_input.close()
