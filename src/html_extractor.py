@@ -46,7 +46,10 @@ if __name__ == '__main__':
 
                 # url extension
                 logging.info('Url Extension: %s', url_orig)
-                urls_extension = list(set(getUrls.get_n_slr(url_orig, URLS_EX_NUM)))[:URLS_EX_NUM]
+                slr_urls = getUrls.get_n_slr(url_orig, URLS_EX_NUM)
+                url_extension = slr_urls
+                if len(set(slr_urls)) > URLS_EX_NUM:
+                    urls_extension = list(set(getUrls.get_n_slr(url_orig, URLS_EX_NUM)))[:URLS_EX_NUM]
                 logging.info('Get %d extension urls for %s', len(urls_extension), url_orig)
 
                 logging.info('Processing extended urls for %s', url_orig)
@@ -115,12 +118,16 @@ if __name__ == '__main__':
                         reply = {"content": bbs_contents[i], "title": title_text, "publish_date": formatted_time_list[i]}
                         replys.append(reply)
                     bbs_info = {"post": post, "replys": replys}
-            except as e:
+            except Exception as e:
                 logging.debug("ERR")
                 logging.debug(str(e))
+                bbs_info = {}
+                replys = []
+                post = {"content": '', "title": '', "publish_date": ''}
+                bbs_info = {"post": post, "replys": replys}
 
-            bbs_json = json.dumps(bbs_info, ensure_ascii=False).encode('utf-8')
+            bbs_json = json.dumps(bbs_info, ensure_ascii=False, sort_keys=True).encode('utf-8')
             #for content in bbs_contents:
-            file_output.write(url_orig + '\t' + bbs_json + '\n')
+            file_output.write(url_orig.strip('\n') + '\t' + bbs_json + '\n')
     file_output.close()
     file_input.close()

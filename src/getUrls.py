@@ -78,9 +78,11 @@ def get_n_slr(url, n): # get n urls similar to the given url
         count1 = count1 + 1
         # print len(set(slr_urls))
         # print set(slr_urls)
-        if count1 > len(local_urls):
+        while count1 > len(local_urls):
             local_urls = local_urls + get_local_urls(local_urls[count2])
             count2 = count2 +1
+            if count2 > len(local_urls):
+                break
     # print(len(set(slr_urls)))
     # print(set(slr_urls))
     return slr_urls
